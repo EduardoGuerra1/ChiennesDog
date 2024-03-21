@@ -1,7 +1,29 @@
-body{
-    background: rgb(219, 180, 142);
-    background-blend-mode: multiply;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+/* Estilos para el carrusel */
+#carouselExampleCaptions {
+    width: 100%;
+    height: 90vh;
+    /* Ajusta el tamaño deseado */
+    /* Centra horizontalmente */
+    margin-top: calc(10%*-1);
+    /* Espacio superior */
+  }
+
+  /* Estilos para las imágenes del carrusel */
+.carousel-item img {
+    height: 90vh;
+    /* Ajusta la altura deseada */
+    object-fit: cover;
+    /* Ajusta el tamaño de la imagen */
+}
+
+
+
+html, body{
+    height: 100vh;
+}
+
+@media (max-width: 991px) {
+    #carouselExampleCaptions{
+        margin-top: 50%;
+      }
 }

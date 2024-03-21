@@ -1,0 +1,28 @@
+{
+    "Comentario": "Texto Global",
+    "BtnEnter": "Añadir",
+    "Name": "Nombre",
+    "BtnAdd": "Agregar",
+    "SelectImg": "Seleccionar imagen",
+
+    "Comentario": "Texto para el Modal de categorías",
+    "HeaderTitleCate": "Añadir categorías",
+    
+    "Comentario": "Texto para el Modal de productos",
+    "HeaderTitleProd": "Agregar productos",   
+    "Category": "Categoría",
+    "Price": "Precio",
+    "Brand": "Marca",
+    "Description": "Descripción",   
+    "Quantity": "Cantidad",
+    
+    "Comentario": "Texto para el Modal de marcas",
+    "HeaderTitleBrand": "Añadir marca",
+    
+    "Comentario": "Texto para el Modal de usuarios",
+    "HeaderTitleUser": "Añadir usuario",
+    "LastName": "Apellido",
+    "Email": "Correo electrónico",
+    "Password": "Contraseña",
+    "JobTitle": "Cargo"
+}
