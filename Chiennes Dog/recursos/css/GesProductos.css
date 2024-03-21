@@ -1,0 +1,40 @@
+        /* Centrar el contenido */
+        .centered-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+
+        /* Ajustes adicionales */
+        .card {
+            width: 50%;
+            /* Ancho del card */
+            padding: 40px;
+            border-radius: 10px;
+            /* Borde redondeado del card */
+        }
+
+        /* Estilo del botón */
+        .btn-transparent {
+            color: black;
+            /* Color del texto */
+            background-color: transparent;
+            /* Fondo transparente */
+            border: 2px solid black;
+            /* Borde */
+            border-radius: 5px;
+            /* Borde redondeado */
+        }
+
+        /* Centrar enlace "Chiennes Dog" */
+        .navbar-brand {
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        /* Centrar secciones en el navbar */
+        .navbar-nav {
+            margin-left: auto;
+            margin-right: auto;
+        }
