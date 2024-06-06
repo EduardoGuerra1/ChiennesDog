@@ -33,7 +33,7 @@ class PedidoHandler
     {
         $this->estado = 'Pendiente';
         $sql = 'SELECT id_pedido
-                FROM pedido
+                FROM tb_pedidos
                 WHERE estado_pedido = ? AND id_cliente = ?';
         $params = array($this->estado, $_SESSION['idCliente']);
         if ($data = Database::getRow($sql, $params)) {
@@ -50,8 +50,8 @@ class PedidoHandler
         if ($this->getOrder()) {
             return true;
         } else {
-            $sql = 'INSERT INTO pedido(direccion_pedido, id_cliente)
-                    VALUES((SELECT direccion_cliente FROM cliente WHERE id_cliente = ?), ?)';
+            $sql = 'INSERT INTO tb_pedidos(direccion_pedido, id_cliente)
+                    VALUES((SELECT direccion_cliente FROM tb_clientes WHERE id_cliente = ?), ?)';
             $params = array($_SESSION['idCliente'], $_SESSION['idCliente']);
             // Se obtiene el ultimo valor insertado de la llave primaria en la tabla pedido.
             if ($_SESSION['idPedido'] = Database::getLastRow($sql, $params)) {
@@ -66,8 +66,10 @@ class PedidoHandler
     public function createDetail()
     {
         // Se realiza una subconsulta para obtener el precio del producto.
-        $sql = 'INSERT INTO detalles_pedidos(id_producto, precio_producto, cantidad_producto, id_pedido)
-                VALUES(?, (SELECT precio_producto FROM producto WHERE id_producto = ?), ?, ?)';
+
+        $sql = 'INSERT INTO tb_detalles_pedidos(id_producto, precio_producto, cantidad_producto, id_pedido)
+                VALUES(?, (SELECT precio_producto FROM tb_productos WHERE id_producto = ?), ?, ?)';
+
         $params = array($this->producto, $this->producto, $this->cantidad, $_SESSION['idPedido']);
         return Database::executeRow($sql, $params);
     }
@@ -76,7 +78,7 @@ class PedidoHandler
     public function readDetail()
     {
         $sql = 'SELECT id_detalle, nombre_producto, detalle_pedido.precio_producto, detalle_pedido.cantidad_producto
-                FROM detalle_pedido
+                FROM tb_detalles_pedidos
                 INNER JOIN pedido USING(id_pedido)
                 INNER JOIN producto USING(id_producto)
                 WHERE id_pedido = ?';

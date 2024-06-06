@@ -1,9 +1,8 @@
-
 <?php
 // Se incluye la clase para trabajar con la base de datos.
 require_once('../../helpers/database.php');
 /*
-*	Clase para manejar el comportamiento de los datos de la tabla PRODUCTO.
+*   Clase para manejar el comportamiento de los datos de la tabla PRODUCTO.
 */
 class ProductoHandler
 {
@@ -19,10 +18,10 @@ class ProductoHandler
     protected $categoria = null;
     protected $marca = null;
     protected $estado = null;
-
+ 
     // Constante para establecer la ruta de las imágenes.
     const RUTA_IMAGEN = '../../images/productos/';
-
+ 
     /*
     *   Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
     */
@@ -38,7 +37,7 @@ class ProductoHandler
         $params = array($value, $value);
         return Database::getRows($sql, $params);
     }
-
+ 
     public function createRow()
     {
         $sql = 'INSERT INTO tb_productos(nombre_producto, descripcion_producto, precio_producto, existencias_producto, imagen_producto, estado_producto, id_categoria, id_marca, id_administrador)
@@ -46,7 +45,7 @@ class ProductoHandler
         $params = array($this->nombre, $this->descripcion, $this->precio, $this->existencias, $this->imagen, $this->estado, $this->categoria, $this->marca, $_SESSION['idAdministrador']);
         return Database::executeRow($sql, $params);
     }
-
+ 
     public function readAll()
     {
         $sql = 'SELECT id_producto, imagen_producto, nombre_producto, descripcion_producto, precio_producto, nombre_categoria, nombre_marca,estado_producto
@@ -56,17 +55,18 @@ class ProductoHandler
                 ORDER BY nombre_producto';
         return Database::getRows($sql);
     }
-
+ 
     public function readOne()
     {
-        $sql = 'SELECT id_producto, nombre_producto, descripcion_producto, precio_producto, existencias_producto, imagen_producto, id_categoria, id_marca, estado_producto, marca_producto
+        $sql = 'SELECT id_producto, nombre_marca, nombre_producto, descripcion_producto, precio_producto, existencias_producto, imagen_producto, id_categoria, id_marca, estado_producto
                 FROM tb_productos
+                INNER JOIN tb_categorias USING(id_categoria)
                 INNER JOIN tb_marcas USING(id_marca)
                 WHERE id_producto = ?';
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
-
+ 
     public function readFilename()
     {
         $sql = 'SELECT imagen_producto
@@ -75,7 +75,7 @@ class ProductoHandler
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
-
+ 
     public function updateRow()
     {
         $sql = 'UPDATE tb_productos
@@ -84,7 +84,7 @@ class ProductoHandler
         $params = array($this->imagen, $this->nombre, $this->descripcion, $this->precio, $this->estado, $this->categoria, $this->marca,  $this->id);
         return Database::executeRow($sql, $params);
     }
-
+ 
     public function deleteRow()
     {
         $sql = 'DELETE FROM tb_productos
@@ -92,7 +92,7 @@ class ProductoHandler
         $params = array($this->id);
         return Database::executeRow($sql, $params);
     }
-
+ 
     public function readProductosMarca()
     {
         $sql = 'SELECT p.id_producto, p.imagen_producto, p.nombre_producto, p.descripcion_producto, p.precio_producto, p.existencias_producto,c.nombre_categoria
@@ -104,7 +104,7 @@ class ProductoHandler
         $params = array($this->marca);
         return Database::getRows($sql, $params);
     }
-
+ 
     /*
     *   Métodos para generar gráficos.
     */
@@ -116,7 +116,7 @@ class ProductoHandler
                 GROUP BY nombre_categoria ORDER BY cantidad DESC LIMIT 5';
         return Database::getRows($sql);
     }
-
+ 
     public function porcentajeProductosCategoria()
     {
         $sql = 'SELECT nombre_categoria, ROUND((COUNT(id_producto) * 100.0 / (SELECT COUNT(id_producto) FROM producto)), 2) porcentaje
@@ -125,7 +125,7 @@ class ProductoHandler
                 GROUP BY nombre_categoria ORDER BY porcentaje DESC';
         return Database::getRows($sql);
     }
-
+ 
     /*
     *   Métodos para generar reportes.
     */
@@ -135,7 +135,7 @@ class ProductoHandler
                 FROM tb_productos
                 INNER JOIN tb_categorias USING(id_categoria)
                 INNER JOIN tb_marcas USING(id_marca)
-                WHERE id_categoria = ? 
+                WHERE id_categoria = ?
                 ORDER BY nombre_producto';
         $params = array($this->categoria);
         return Database::getRows($sql, $params);

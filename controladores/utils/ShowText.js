@@ -4,7 +4,7 @@ fetch('../../recursos/Text/public/ModalArticles.json')
         //Texto de modal del artículo/accesorio
         document.getElementById('Description').innerText = data.Description;
         document.getElementById('Minus').innerText = data.Minus;
-        document.getElementById('Num').innerText = data.Num;
+        document.getElementById('cantidadProducto').innerText = data.Num;
         document.getElementById('Plus').innerText = data.Plus;
         document.getElementById('BtnAdd').innerText = data.BtnAdd;
         //Texto de modal de valoraciones
