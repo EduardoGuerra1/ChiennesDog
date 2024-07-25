@@ -144,7 +144,33 @@ class ProductoHandler
                 GROUP BY nombre_categoria ORDER BY porcentaje DESC';
         return Database::getRows($sql);
     }
- 
+
+    public function productosMarcas()
+    {
+        $sql = 'SELECT m.nombre_marca,
+                    p.id_producto,
+                    p.nombre_producto,
+                    p.descripcion_producto,
+                    p.precio_producto,
+                    p.imagen_producto,
+                    p.estado_producto,
+                    p.existencias_producto,
+                    p.fecha_registro
+                FROM tb_productos p
+                JOIN tb_marcas m ON p.id_marca = m.id_marca
+                ORDER BY m.nombre_marca, p.nombre_producto';
+        return Database::getRows($sql);
+    }
+
+    public function ventasProductos()
+    {
+        $sql = 'SELECT p.nombre_producto, SUM(dp.cantidad_producto * dp.precio_producto) AS total_ventas
+                FROM tb_productos p
+                JOIN tb_detalles_pedidos dp ON p.id_producto = dp.id_producto
+                GROUP BY p.nombre_producto
+                ORDER BY total_ventas DESC';
+        return Database::getRows($sql);
+    }
     /*
     *   Métodos para generar reportes.
     */

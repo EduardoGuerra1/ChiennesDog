@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     graficoBarrasCategorias();
     graficoPastelCategorias();
     graficoBarrasExistencias();
+    graficoPastelProductos();
+    graficoBarrasVentas();
 });
 
 /*
@@ -84,6 +86,50 @@ const graficoBarrasExistencias = async () => {
         barGraph('chart3', productos, existencias, 'Nombre de Productos', 'Existencias de Producto');
     } else {
         document.getElementById('chart3').remove();
+        console.log(DATA.error);
+    }
+}
+
+const graficoPastelProductos = async () => {
+    // Petición para obtener los datos del gráfico.
+    const DATA = await fetchData(PRODUCTO_API, 'productosMarcas');
+    // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
+    if (DATA.status) {
+        // Se declaran los arreglos para guardar los datos a graficar.
+        let categorias = [];
+        let cantidades = [];
+        // Se recorre el conjunto de registros fila por fila a través del objeto row.
+        DATA.dataset.forEach(row => {
+            // Se agregan los datos a los arreglos.
+            nombre_marca.push(row.m.nombre_marca);
+            nombre_producto.push(row.p.nombre_producto);
+        });
+        // Llamada a la función para generar y mostrar un gráfico de barras. Se encuentra en el archivo components.js
+        pieGraph('chart4', nombre_marca, nombre_producto, 'Nombre de la Marca', 'Nombre de el producto');
+    } else {
+        document.getElementById('chart4').remove();
+        console.log(DATA.error);
+    }
+}
+
+const graficoBarrasVentas = async () => {
+    // Petición para obtener los datos del gráfico.
+    const DATA = await fetchData(PRODUCTO_API, 'ventasProductos');
+    // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
+    if (DATA.status) {
+        // Se declaran los arreglos para guardar los datos a graficar.
+        let nombre_producto = [];
+        let ventas = [];
+        // Se recorre el conjunto de registros fila por fila a través del objeto row.
+        DATA.dataset.forEach(row => {
+            // Se agregan los datos a los arreglos.
+            nombre_producto.push(row.cantidad_producto);
+            ventas.push(row.total_ventas);
+        });
+        // Llamada a la función para generar y mostrar un gráfico de barras. Se encuentra en el archivo components.js
+        barGraph('chart5', cantidad_producto, total_ventas, 'Nombre ', 'Total Ventas');
+    } else {
+        document.getElementById('chart5').remove();
         console.log(DATA.error);
     }
 }
