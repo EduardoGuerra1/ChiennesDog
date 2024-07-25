@@ -135,14 +135,14 @@ INSERT INTO tb_cargos (nombre_cargo)values ('jefe');
 INSERT INTO tb_administradores(nombre_administrador, apellido_administrador, id_cargo, correo_administrador, clave_administrador) 
 VALUES ('Eduts', 'Guerra', 1, 'eduts@gmail.com','$2y$10$mgITCka8G.nd7u84zBEKZ.fpqpRiJDotyePB8WoxZA3..7DgBji7e' );
 
-SELECT * FROM tb_administradores
+SELECT * FROM tb_administradores;
 SELECT * FROM tb_productos;
 SELECT * FROM tb_clientes;
 SELECT * FROM tb_pedidos;
 SELECT c.apellido_cliente, c.nombre_cliente, c.correo_cliente, c.telefono_cliente, COUNT(p.id_pedido) AS total_pedidos
 FROM tb_clientes c
 LEFT JOIN tb_pedidos p ON c.id_cliente = p.id_cliente
-GROUP BY c.apellido_cliente
+GROUP BY c.apellido_cliente;
 
 SELECT 
     c.nombre_cliente,
