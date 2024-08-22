@@ -1,29 +1,53 @@
 import React, { useEffect, useState } from "react";
 import {
     ScrollView,
-    TouchableOpacity,
     View,
     Text,
     ActivityIndicator,
     StyleSheet,
-    Alert,
-    Image,
-    StatusBar,
     KeyboardAvoidingView,
     Platform,
     Dimensions,
 } from "react-native";
 import fetchData from "../utils/fetchData";
 import Card from "../components/cards/colorCard";
-import { useNavigation } from "@react-navigation/native";
-import BottomNav from "../components/navigation/bottomNavigation";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Svg, { Path } from "react-native-svg";
+import * as constantes from '../utils/constantes';
 
 const ProductoGaleria = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+    const { id_marca } = route.params;
 
-    const navegarInfo = async () => {
-        navigation.replace("ProductoInfo");
+    const [productos, setProductos] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const getProductos = async () => {
+        try {
+            console.log(id_marca);
+            const form = new FormData();
+            form.append("idMarca", id_marca);
+            const DATA = await fetchData("producto", "readProductosMarca", form);   
+                       
+            if (DATA.status) {
+                setProductos(DATA.dataset);
+            } else {
+                alert("Error fetching products1: " + DATA.error);
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            alert("Error fetching products: " + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        getProductos();
+    }, [id_marca]);
+
+    const navegarInfo = (id_producto) => {
+        navigation.replace("ProductoInfo", {id_producto});
     };
 
     const navegarDashboard = async () => {
@@ -38,7 +62,7 @@ const ProductoGaleria = () => {
         >
             <ScrollView style={styles.mainContainer}>
                 <View style={styles.header}>
-                    <Svg
+                <Svg
                         width="44"
                         height="39"
                         viewBox="0 0 49 41"
@@ -52,25 +76,21 @@ const ProductoGaleria = () => {
                             fill="white"
                         />
                     </Svg>
-
-                    <Text style={styles.tittle}>Accesorios</Text>
+                    <Text style={styles.tittle}>Productos</Text>
                 </View>
                 <View style={styles.content}>
-                    <Card
-                        text="Collar rojo seguro"
-                        image={require("../assets/images/examples/image4.png")}
-                        onPress={navegarInfo}
-                    />
-                    <Card
-                        text="Comida"
-                        image={require("../assets/images/examples/image4.png")}
-                        onPress={navegarInfo}
-                    />
-                    <Card
-                        text="Cosméticos"
-                        image={require("../assets/images/examples/image4.png")}
-                        onPress={navegarInfo}
-                    />
+                    {loading ? (
+                        <ActivityIndicator size="large" color="#0000ff" />
+                    ) : (
+                        productos.map((producto) => (
+                            <Card
+                                key={producto.id_producto} 
+                                text={producto.nombre_producto} 
+                                image={{ uri: `${constantes.IP}/chiennesdog/mobile/chiennesdog/assets/images/examples/${producto.imagen_producto}` }} 
+                                onPress={() => navegarInfo(producto.id_producto)}
+                            />
+                        ))
+                    )}
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
@@ -96,10 +116,6 @@ const styles = StyleSheet.create({
         borderBottomEndRadius: 90,
         marginBottom: "10%",
         paddingVertical: 14
-    },
-    return: {
-        marginVertical: 10,
-        marginHorizontal: 35,
     },
     tittle: {
         fontSize: 40,
