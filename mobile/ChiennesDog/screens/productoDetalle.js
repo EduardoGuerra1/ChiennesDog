@@ -98,7 +98,7 @@ export default function ProductoDetalle({ navigation }) {
                         />
                     </Svg>
                     <Image
-                        source={require("../assets/images/examples/image4.png")}
+                        source={{ uri: `${constantes.IP}/chiennesdog/mobile/chiennesdog/assets/images/examples/${productos.imagen_producto}` }}
                         style={styles.image}
                     />
                 </View>
@@ -108,12 +108,9 @@ export default function ProductoDetalle({ navigation }) {
                         <Text style={styles.tittle}>{productos.nombre_producto}</Text>
                     </View>
                     <Text style={styles.description}>
-                        Correa de cuerda extensible. Diseño elegante en plástico
-                        brillante. Con clip de seguridad, que nos permitirá
-                        parar la extensión o bien convertirla en correa fija.
-                        Disponible en colores negro o rojo.
+                        {productos.descripcion_producto}
                     </Text>
-                    <Text style={styles.price}>$ 3.75</Text>
+                    <Text style={styles.price}>$ {productos.precio_producto}</Text>
                     <Text style={styles.rating}>★★★★★</Text>
                     <View style={styles.bottonContent}>
                         <DefaultBtn
@@ -148,6 +145,9 @@ const styles = StyleSheet.create({
         height: Dimensions.get("window").height / 4,
     },
     image: {
+        width: '100%', // O un valor específico
+    height: '100%', // O un valor específico
+    resizeMode: 'contain',
         alignSelf: "center",
     },
     content: {
