@@ -1,30 +1,47 @@
 import React, { useEffect, useState } from "react";
 import {
     ScrollView,
-    TouchableOpacity,
     View,
     Text,
-    ActivityIndicator,
     StyleSheet,
-    Alert,
-    Image,
-    StatusBar,
     KeyboardAvoidingView,
     Platform,
     Dimensions,
+    ActivityIndicator,
 } from "react-native";
 import fetchData from "../utils/fetchData";
-import Card from "../components/cards/simpleCard"
+import Card from "../components/cards/simpleCard";
 import { useNavigation } from '@react-navigation/native';
+import * as constantes from '../utils/constantes';
 
-const Dashoard = () => {
-
+const Dashboard = () => {
     const navigation = useNavigation();
+    const [marcas, setMarcas] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const navegarGaleria = async () => {
-        navigation.replace("ProductoGale");
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const DATA = await fetchData("marcas", "readAll");
+                if (DATA.status) {
+                    setMarcas(DATA.dataset);
+                } else {
+                    alert("Error fetching data: " + DATA.error);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                alert("Error fetching data: " + error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        getData();
+    }, []);
+
+    const navegarGaleria = (id_marca) => {
+        navigation.navigate("ProductoGaleria", { id_marca });
     };
-
 
     return (
         <KeyboardAvoidingView
@@ -37,21 +54,18 @@ const Dashoard = () => {
                     <Text style={styles.tittle}>Categorías</Text>
                 </View>
                 <View style={styles.content}>
-                <Card 
-                        text="Accesorios" 
-                        image={require("../assets/images/examples/image4.png")} 
-                        onPress={navegarGaleria}
-                    />
-                    <Card 
-                        text="Comida" 
-                        image={require("../assets/images/examples/image7.png")} 
-                        onPress={navegarGaleria}
-                    />
-                    <Card 
-                        text="Cosméticos" 
-                        image={require("../assets/images/examples/image12.png")} 
-                        onPress={navegarGaleria}
-                    />
+                    {loading ? (
+                        <ActivityIndicator size="large" color="#0000ff" />
+                    ) : (
+                        marcas.map((marca) => (
+                            <Card
+                                key={marca.id_marca} 
+                                text={marca.nombre_marca} 
+                                image={{ uri: `${constantes.IP}/chiennesdog/mobile/chiennesdog/assets/images/examples/${marca.imagen_marca}` }} 
+                                onPress={() => navegarGaleria(marca.id_marca)}
+                            />
+                        ))
+                    )}
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
@@ -81,6 +95,7 @@ const styles = StyleSheet.create({
     },
     content: {
         alignItems: "center",
+        marginBottom: 90,
     },
     card: {
         display: "flex",
@@ -99,4 +114,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Dashoard;
+export default Dashboard;
