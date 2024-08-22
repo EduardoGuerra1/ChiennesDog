@@ -40,7 +40,7 @@ const Dashboard = () => {
     }, []);
 
     const navegarGaleria = (id_marca) => {
-        navigation.navigate("ProductoGaleria", { id_marca });
+        navigation.navigate("ProductoGale", { id_marca });
     };
 
     return (

@@ -11,14 +11,23 @@ if (isset($_GET['action'])) {
     // Se compara la acción a realizar según la petición del controlador.
     switch ($_GET['action']) {
         case 'readProductosMarca':
-            if (!$producto->setMarca($_POST['idMarca'])) {
-                $result['error'] = $producto->getDataError();
-            } elseif ($result['dataset'] = $producto->readProductosMarca()) {
-                $result['status'] = 1;
+            $_POST = Validator::validateForm($_POST);
+            // Verifica que el parámetro 'idMarca' está presente en la solicitud POST.
+            if (isset($_POST['idMarca'])) {
+                // Registra el valor del parámetro en el registro de errores.
+                error_log('ID Marca recibido: ' . $_POST['idMarca']);
+                if (!$producto->setMarca($_POST['idMarca'])) {
+                    $result['error'] = $producto->getDataError();
+                } if ($result['dataset'] = $producto->readProductosMarca()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No existen productos para mostrar';
+                }
             } else {
-                $result['error'] = 'No existen productos para mostrar';
+                $result['error'] = 'Parámetro idMarca no recibido';
             }
             break;
+        
         case 'readOne':
             if (!$producto->setId($_POST['idProducto'])) {
                 $result['error'] = $producto->getDataError();
