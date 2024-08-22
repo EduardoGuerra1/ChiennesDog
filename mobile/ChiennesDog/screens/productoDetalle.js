@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     ScrollView,
     TouchableOpacity,
@@ -14,10 +14,40 @@ import {
 
 import fetchData from "../utils/fetchData";
 import DefaultBtn from "../components/buttons/defaultBtn";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Svg, { Path } from "react-native-svg";
+import * as constantes from '../utils/constantes';
 
 export default function ProductoDetalle({ navigation }) {
+    const route = useRoute();
+    const { id_producto } = route.params;
     const [quantity, setQuantity] = useState(1);
+
+    const [productos, setProductos] = useState([]);
+
+    const getProducto = async () => {
+        try {
+            console.log(id_producto);
+            const form = new FormData();
+            form.append("idProducto", id_producto);
+            const DATA = await fetchData("producto", "readOne", form);   
+                       
+            if (DATA.status) {
+                setProductos(DATA.dataset);
+            } else {
+                alert("Error fetching products1: " + DATA.error);
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            alert("Error fetching products: " + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        getProducto();
+    }, [id_producto]);
+
 
     const handleIncrease = () => {
         setQuantity(quantity + 1);
@@ -30,7 +60,9 @@ export default function ProductoDetalle({ navigation }) {
     };
 
     const navegarGale = async () => {
-        navigation.replace("ProductoGale");
+        navigation.replace("Navigation", {
+            screen: "Dashboard",
+        });
     };
 
     const navegarCarrito = async () => {
@@ -73,7 +105,7 @@ export default function ProductoDetalle({ navigation }) {
 
                 <View style={styles.content}>
                     <View style={styles.headerContent}>
-                        <Text style={styles.tittle}>Collar rojo seguro</Text>
+                        <Text style={styles.tittle}>{productos.nombre_producto}</Text>
                     </View>
                     <Text style={styles.description}>
                         Correa de cuerda extensible. Diseño elegante en plástico
