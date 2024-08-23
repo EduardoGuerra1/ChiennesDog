@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icons/adaptive-icon.png",
         "backgroundColor": "#FF9E08"
-      }
+      },
+      "package": "com.jeanfranco02.ChiennesDog"
     },
     "web": {
       "favicon": "./assets/images/icons/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6f761ee9-7be8-4021-8ed8-13314388ded5"
+      }
     }
   }
 }

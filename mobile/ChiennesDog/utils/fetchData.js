@@ -9,7 +9,7 @@ const fetchData = async (filename, action, form = null) => {
         OPTIONS.method = 'GET';
     }
     try {
-        const PATH = new URL(`${constantes.IP}/chiennesdog/api/services/public/${filename}.php`);
+        const PATH = new URL(`https://chiennesdog.site/ChiennesDog/api/services/public/${filename}.php`);
         PATH.searchParams.append('action', action);
 
         const RESPONSE = await fetch(PATH.href, OPTIONS);
@@ -18,7 +18,7 @@ const fetchData = async (filename, action, form = null) => {
         }
         return await RESPONSE.json();
     } catch (error) {
-        console.error('Fetch error:', error);
+        console.error('Fetch error aqui:', error);
         return { error: true, message: error.message };
     }
 };

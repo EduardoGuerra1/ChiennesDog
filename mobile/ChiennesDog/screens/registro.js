@@ -62,6 +62,7 @@ export default function Registro({ navigation }) {
             });
 
             const DATA = await fetchData("cliente", "signUpMovil", form);
+            console.log(DATA);
             if (DATA.status) {
                 // Navega a la siguiente pantalla o ruta en la aplicación
                 await handlerLogin();

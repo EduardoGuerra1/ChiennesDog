@@ -1,1 +1,1 @@
-export const IP = 'http://10.10.0.33'
+export const IP = 'https://chiennesdog.site/'
